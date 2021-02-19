@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <Background/>
     <router-view/>
   </div>
 </template>
@@ -30,3 +27,11 @@
   }
 }
 </style>
+<script>
+import Background from "./components/Background";
+
+export default {
+  components: {Background},
+}
+
+</script>
