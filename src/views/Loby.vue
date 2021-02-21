@@ -42,11 +42,14 @@ export default {
         this.joinGame()
     }
     const self = this
-    this.$store.state.connection.onmessage = function(e){
+    this.$store.state.connection.onmessage = function(e) {
       const data = JSON.parse(e.data)
       if(self.game) {
-        if(data.event == "user enter"){
+        if(data.event == "user enter") {
           self.game.users.push(data.data)
+        }
+        else if(data.event == "game start") {
+
         }
       }
     }
@@ -93,7 +96,22 @@ export default {
       await navigator.clipboard.writeText(`http://localhost:8080/#/loby?i=${this.game.id}`)
     },
     startGame: function (){
+      const formData = new FormData();
+      formData.append("page_start", this.game.page_start)
+      formData.append("page_end", this.game.page_end)
 
+      const requestOptions = {
+        method: "POST",
+        headers: this.$store.getters.auth_full_header,
+        body: formData
+      }
+      fetch(`${this.$base_url}/start_game`, requestOptions)
+          .then(res => res.json())
+          .then(res => {
+            if(res.message)
+              console.log(res.message)
+          })
+          .catch(err => console.log(err))
     }
   }
 }
