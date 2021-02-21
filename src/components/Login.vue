@@ -20,7 +20,7 @@
 
 <script>
 export default {
-name: "Login",
+  name: "Login",
   data: function() {
     return {
       username: ""
@@ -33,7 +33,7 @@ name: "Login",
         body: new URLSearchParams(`username=${this.username}`)
       };
       const self = this;
-      fetch('http://127.0.0.1:8000/login', requestOptions)
+      fetch(`${this.$base_url}/login`, requestOptions)
           .then(res => res.json())
           .then(res => {
             if(res.message)
@@ -41,6 +41,9 @@ name: "Login",
 
             // Store token with Vuex.Store
             self.$store.commit('setToken', res.token)
+            self.$store.commit('setUUID', res.uuid)
+            self.$store.state.connection.send(JSON.stringify({event:'user_assignation', token: self.$store.state.token}))
+            self.$emit('onLogin')
           })
           .catch(err => console.log(err))
     }
@@ -131,8 +134,8 @@ $your-pink: #bcbcbc;
   box-sizing: border-box;
   box-shadow: 0 0.125em 0.3125em rgba($black, 0.3);
 
-// position form inputs
-display: flex;
+  // position form inputs
+  display: flex;
   justify-content: center;
 }
 
@@ -142,14 +145,14 @@ display: flex;
   cursor: pointer;
   z-index: 1;
 
-// position message
+  // position message
   display: flex;
   align-items: center;
   justify-content: center;
 
   &::before {
-     font-size: 1.75em;
-     content: attr(data-title);
+    font-size: 1.75em;
+    content: attr(data-title);
   }
 }
 
@@ -178,11 +181,11 @@ display: flex;
   padding: 0 0.714em;
 
   &::placeholder {
-     color: currentColor;
+    color: currentColor;
   }
 
   &:required:valid {
-     color: $salmon;
+    color: $salmon;
 
     + .c-form__buttonLabel {
       color: $white;
@@ -199,15 +202,15 @@ display: flex;
   height: 100%;
   width: auto;
 
-// accepts click events
-    &::before {
-     content: '';
-     position: absolute;
-     width: 100%;
-     height: 100%;
-     pointer-events: none;
-     cursor: pointer;
-    }
+  // accepts click events
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    cursor: pointer;
+  }
 }
 
 .c-form__button {
