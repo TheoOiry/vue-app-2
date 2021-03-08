@@ -7,8 +7,14 @@
       </div>
       <div class="parameters" v-if="isAdmin">
         <div class="parameters__pages">
-          <input v-model="game.page_start" placeholder="PAGE START">
-          <input v-model="game.page_end" placeholder="END PAGE">
+          <input v-model="game.page_start" v-on:keyup="getWikiTitle(game.page_start)" list="page_start" placeholder="PAGE START">
+          <datalist id="page_start">
+            <option v-for="title in wikiTitle">{{title}}</option>
+          </datalist>
+          <input v-model="game.page_end" v-on:keyup="getWikiTitle(game.page_end)" list="page_end" placeholder="END PAGE">
+          <datalist id="page_end">
+            <option v-for="title in wikiTitle">{{title}}</option>
+          </datalist>
         </div>
         <div class="parameters__game">
           <button @click="copyLink()" >INVITE</button>
@@ -27,7 +33,8 @@ export default {
   name: "Create",
   data: function(){
     return {
-      game: undefined
+      game: undefined,
+      wikiTitle: []
     }
   },
   computed: {
@@ -116,6 +123,22 @@ export default {
               console.log(res.message)
           })
           .catch(err => console.log(err))
+    },
+    getWikiTitle:  function(title) {
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Host': '127.0.0.1:8000',
+          'Accept': '*/*',
+          'Content-type':'application/json'
+        }
+      };
+      fetch(`http://127.0.0.1:8000/wiki_game?title=${title}`, requestOptions)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data)
+            this.wikiTitle = data.data
+          })
     }
   }
 }
