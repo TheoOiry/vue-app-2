@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="logo_container">
-      <img class="logo" src="../assets/wikiwars_logo.png">
+      <img alt="logo" class="logo" src="../assets/wikiwars_logo.png">
     </div>
     <div class="input">
       <input class="c-checkbox" type="checkbox" id="checkbox">
@@ -123,7 +123,7 @@ $your-pink: #bcbcbc;
 .c-form__toggle {
   position: absolute;
   border-radius: 6.25em;
-  background-color: $white;
+  background-color: $cornflower-lilac;
   transition: 0.2s;
 }
 
@@ -140,7 +140,7 @@ $your-pink: #bcbcbc;
 }
 
 .c-form__toggle {
-  color: $salmon;
+  color: $white;
   top: 0;
   cursor: pointer;
   z-index: 1;
@@ -175,7 +175,8 @@ $your-pink: #bcbcbc;
 }
 
 .c-form__input {
-  color: $your-pink;
+  color: $white;
+  background: $cornflower-lilac;
   height: 100%;
   width: 100%;
   padding: 0 0.714em;
@@ -185,10 +186,10 @@ $your-pink: #bcbcbc;
   }
 
   &:required:valid {
-    color: $salmon;
+    color: $white;
 
     + .c-form__buttonLabel {
-      color: $white;
+      color: $cornflower-lilac;
 
       //&::before {
       //   pointer-events: inherit;
@@ -218,7 +219,7 @@ $your-pink: #bcbcbc;
   padding: 0;
   height: 100%;
   width: 5em;
-  background-color: $salmon;
+  background-color: $white;
   &:hover {
     cursor: pointer;
   }

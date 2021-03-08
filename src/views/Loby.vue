@@ -3,13 +3,17 @@
     <Login v-if="!$store.getters.is_logged" @onLogin="isCreating ? createGame() : joinGame()"></Login>
     <div class="room-info" v-else-if="game" >
       <div class="players">
-        <UserInfo v-for="user in game.users" :key="user.uuid" :user="user"/>
+        <UserInfo class="user_info" v-for="user in game.users" :key="user.uuid" :user="user"/>
       </div>
       <div class="parameters" v-if="isAdmin">
-        <input v-model="game.page_start" placeholder="page start">
-        <input v-model="game.page_end" placeholder="page end">
-        <button @click="copyLink()" >Copy invite link</button>
-        <button @click="startGame()" >Start</button>
+        <div class="parameters__pages">
+          <input v-model="game.page_start" placeholder="PAGE START">
+          <input v-model="game.page_end" placeholder="END PAGE">
+        </div>
+        <div class="parameters__game">
+          <button @click="copyLink()" >INVITE</button>
+          <button @click="startGame()" >START</button>
+        </div>
       </div>
     </div>
   </div>
@@ -118,13 +122,111 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+@import '../script'; // Using this should get you the variables
+
 .room-info {
-  display: grid;
+  display: flex;
+  height: 80vh;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 5vh;
+  margin-right: 5vw;
+  margin-left: 5vw;
+  padding-top: 5%;
+  box-shadow: 1px 1px 15px 2.5px $dark-grey;
+  border-radius: 10px;
+  border: 10px;
+
   .players {
-    grid-column: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    //justify-content: space-between;
+    align-items: center;
+    width: 20%;
+    height: 70%;
+    background: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.9);
+    border-radius: 75px 30px;
+    padding-top: 1%;
+    padding-bottom: 0.5%;
+    font-weight: 700;
+    font-size: 20px;
+    font-family: Roboto, sans-serif;
   }
   .parameters {
-    grid-column: 2 / 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 45%;
+    height: 70%;
+
+    .parameters__pages {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-evenly;
+      border-radius: 75px 30px;
+      background: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.9);
+      width: 100%;
+      height: 65%;
+
+      input {
+        text-align: center;
+        width: 40%;
+        height: 15%;
+        font-weight: 700;
+        font-size: 1.25em;
+        border-radius: 10px;
+        border: none;
+
+        &:focus {
+          outline:none;
+        }
+      }
+    }
+
+    .parameters__game {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-evenly;
+      margin-top: 5%;
+      width: 70%;
+      height: 15%;
+
+      button {
+        width: 40%;
+        height: 60%;
+        font-weight: 700;
+        font-size: 1.5em;
+        background-color: $light-grey;
+        box-shadow: 1px 2px 2px $dark-grey;
+        border-radius: 10px;
+        border: none;
+
+        &:focus {
+          outline:none;
+        }
+
+        &:hover {
+          background-color: $grey;
+          cursor: pointer;
+          color: $light-grey;
+        }
+      }
+    }
   }
+}
+
+.user_info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 75%;
+  border-radius: 30px;
+  background-color: $white;
+  color: black;
+  margin-bottom: 3%;
 }
 </style>
