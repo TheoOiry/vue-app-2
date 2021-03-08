@@ -56,11 +56,11 @@ export default {
     this.$store.state.connection.onmessage = function(e) {
       const data = JSON.parse(e.data)
       if(self.game) {
-        if(data.event == "user enter") {
+        if(data.event === "user enter") {
           self.game.users.push(data.data)
         }
-        else if(data.event == "game start") {
-
+        else if(data.event === "game start") {
+          self.$router.push({name: 'Game', query: { 'i': data.data.id }})
         }
       }
     }
@@ -104,7 +104,7 @@ export default {
           .catch(err => console.log(err))
     },
     copyLink: async function (){
-      await navigator.clipboard.writeText(`http://localhost:8080/#/loby?i=${this.game.id}`)
+      await navigator.clipboard.writeText(`http://localhost:8080/#/lobby?i=${this.game.id}`)
     },
     startGame: function (){
       const formData = new FormData();

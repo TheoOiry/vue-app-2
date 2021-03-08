@@ -1,11 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Loby from "@/views/Loby";
+import Lobby from "@/views/Lobby";
+import Game from "@/views/Game";
+
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', component: Loby },
-  { path: '/loby', name: 'Loby', component: Loby }
+  { path: '/', component: Lobby },
+  { path: '/lobby', name: 'Lobby', component: Lobby },
+  {
+    path: '/game',
+    name: 'Game',
+    component: Game,
+    props: route => ({ game_id: route.query.i })
+  },
 ]
 
 const router = new VueRouter({
