@@ -3,7 +3,9 @@
     <Login v-if="!$store.getters.is_logged" @onLogin="isCreating ? createGame() : joinGame()"></Login>
     <div class="room-info" v-else-if="game" >
       <div class="players">
-        <UserInfo class="user_info" v-for="user in game.users" :key="user.uuid" :user="user"/>
+        <div class="user_info_container">
+          <UserInfo class="user_info" v-for="user in game.users" :key="user.uuid" :user="user"/>
+        </div>
       </div>
       <div class="parameters" v-if="isAdmin">
         <div class="parameters__pages">
@@ -127,13 +129,8 @@ export default {
     getWikiTitle:  function(title) {
       const requestOptions = {
         method: 'GET',
-        headers: {
-          'Host': '127.0.0.1:8000',
-          'Accept': '*/*',
-          'Content-type':'application/json'
-        }
       };
-      fetch(`http://127.0.0.1:8000/wiki_game?title=${title}`, requestOptions)
+      fetch(`${this.$base_url}/wiki_game?title=${title}`, requestOptions)
           .then(response => response.json())
           .then(data => {
             console.log(data)
@@ -173,9 +170,33 @@ export default {
     padding-top: 1%;
     padding-bottom: 0.5%;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 1vw;
     font-family: Roboto, sans-serif;
   }
+
+  .user_info_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    height: 100%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    overflow: auto;
+  }
+
+  .user_info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5%;
+    height: 30px;
+    width: 100%;
+    border-radius: 30px;
+    background-color: $white;
+    color: black;
+  }
+
   .parameters {
     display: flex;
     flex-direction: column;
@@ -198,7 +219,7 @@ export default {
         width: 40%;
         height: 15%;
         font-weight: 700;
-        font-size: 1.25em;
+        font-size: 1.25vw;
         border-radius: 10px;
         border: none;
 
@@ -221,7 +242,7 @@ export default {
         width: 40%;
         height: 60%;
         font-weight: 700;
-        font-size: 1.5em;
+        font-size: 1.25vw;
         background-color: $light-grey;
         box-shadow: 1px 2px 2px $dark-grey;
         border-radius: 10px;
@@ -241,15 +262,4 @@ export default {
   }
 }
 
-.user_info {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 30px;
-  width: 75%;
-  border-radius: 30px;
-  background-color: $white;
-  color: black;
-  margin-bottom: 3%;
-}
 </style>
