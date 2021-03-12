@@ -1,6 +1,7 @@
 <template>
   <div class="game">
     <div class="wikiTitles">
+      <span class="wikiTitles_title">Titres Wikipedia</span>
       <div class="wikiTitles_container">
         <div class="wikiTitles_unit" v-for="wikiTitles in wikiTitles">
           <span>{{wikiTitles.title}}</span>
@@ -11,6 +12,7 @@
       <iframe class="iframe" id="ifr" :src="game.url_start"></iframe>
     </div>
     <div class="players">
+      <span class="players_title">Joueurs</span>
       <div class="players_container">
         <UserInfo class="players_unit" v-for="user in game.users" :key="user.uuid" :user="user" />
       </div>
@@ -68,6 +70,7 @@ export default {
   },
   methods: {
     updateWikiTitles: function (event) {
+      console.log(event.data.last_page.title)
       if (event.data.last_page.title === this.wikiTitles[this.wikiTitles.length - 1].title) {
         this.wikiTitles.push(event.data.new_page)
       } else if(this.wikiTitles.find(w => w.title === event.data.last_page.title)) {
@@ -78,6 +81,7 @@ export default {
       }
       else {
         alert("C'est pas ouf de tricher")
+        this.wikiTitles.push(event.data.new_page)
       }
     },
   }
@@ -91,10 +95,10 @@ export default {
 .game {
   display: flex;
   align-items: center;
-  width: 98vw;
+  width: 99vw;
   height: 95vh;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 
 .players,
@@ -102,16 +106,30 @@ export default {
   display: flex;
   flex-direction: column;
   //justify-content: space-between;
+  padding-top: 2%;
   align-items: center;
-  width: 15%;
-  height: 70%;
+  width: 27vh;
+  height: 75vh;
   background: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.9);
-  border-radius: 75px 30px;
-  padding-top: 1%;
-  padding-bottom: 0.5%;
   font-weight: 700;
   font-size: 1vw;
   font-family: Roboto, sans-serif;
+}
+
+.players {
+  border-radius: 20px 50px 50px 20px;
+}
+
+.wikiTitles {
+  border-radius: 50px 20px 20px 50px;
+}
+
+.players_title,
+.wikiTitles_title {
+  margin-top: 1vh;
+  margin-bottom: 3vh;
+  font-size: 1.5em;
+  color: $white;
 }
 
 .players_container,
@@ -140,8 +158,8 @@ export default {
 }
 
 .iframe {
-  width: 60vw;
-  height: 80vh;
+  width: 65vw;
+  height: 85vh;
   //height: 900em;
   box-shadow: 1px 1px 15px 2.5px $dark-grey;
   border-radius: 10px;

@@ -7,7 +7,7 @@
       <input class="c-checkbox" type="checkbox" id="checkbox">
       <div class="c-formContainer">
         <div class="c-form">
-          <input class="c-form__input" placeholder="Username" type="text" v-model="username" required>
+          <input class="c-form__input" placeholder="Username" type="text" @keyup.enter="valid_username()" v-model="username" required>
           <label class="c-form__buttonLabel" for="checkbox">
             <button class="c-form__button" @click="valid_username()" type="button">Start</button>
           </label>
