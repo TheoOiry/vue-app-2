@@ -36,7 +36,7 @@ export default {
   data: function(){
     return {
       game: undefined,
-      wikiTitle: []
+      wikiTitle: [],
     }
   },
   computed: {
@@ -175,7 +175,6 @@ export default {
   }
 
   .user_info_container {
-    display: flex;
     flex-direction: column;
     align-items: center;
     width: 70%;
@@ -183,18 +182,6 @@ export default {
     margin-top: 3%;
     margin-bottom: 3%;
     overflow: auto;
-  }
-
-  .user_info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 5%;
-    height: 30px;
-    width: 100%;
-    border-radius: 30px;
-    background-color: $white;
-    color: black;
   }
 
   .parameters {

@@ -1,7 +1,7 @@
 <template>
   <div class="letters">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 500" preserveAspectRatio="xMidYMax slice">
-      <g fill="#000000" fill-opacity=".6" transform="translate(55 42)">
+      <g fill="#000000" fill-opacity=".6"z>
         <g id="letters-bottom-layer">
           <text :x="randomNumber(-60,1020)" :y="randomNumber(6,1459)" v-for="n in 500" :key="`${n}bottom`" font-size="6">{{letters[Math.floor(Math.random()*letters.length)]}}</text>
         </g>
@@ -42,8 +42,7 @@ export default {
   pointer-events: none;
 }
 
-.letters .svg {
-  position: absolute;
+svg {
   width: 100%;
   height: 100%;
 }
