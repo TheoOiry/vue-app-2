@@ -9,11 +9,11 @@
       </div>
       <div class="parameters" v-if="isAdmin">
         <div class="parameters__pages">
-          <input v-model="game.page_start" v-on:keyup="getWikiTitle(game.page_start)" list="page_start" placeholder="PAGE START">
+          <input v-model="game.page_start" v-on:keyup="getWikiTitle(true)" list="page_start" placeholder="PAGE START">
           <datalist id="page_start">
             <option v-for="title in wikiTitle">{{title}}</option>
           </datalist>
-          <input v-model="game.page_end" v-on:keyup="getWikiTitle(game.page_end)" list="page_end" placeholder="END PAGE">
+          <input v-model="game.page_end" v-on:keyup="getWikiTitle(false)" list="page_end" placeholder="END PAGE">
           <datalist id="page_end">
             <option v-for="title in wikiTitle">{{title}}</option>
           </datalist>
@@ -37,6 +37,7 @@ export default {
     return {
       game: undefined,
       wikiTitle: [],
+      gettingWikiTile: false
     }
   },
   computed: {
@@ -126,16 +127,23 @@ export default {
           })
           .catch(err => console.log(err))
     },
-    getWikiTitle:  function(title) {
-      const requestOptions = {
-        method: 'GET',
-      };
-      fetch(`${this.$base_url}/wiki_game?title=${title}`, requestOptions)
-          .then(response => response.json())
-          .then(data => {
-            console.log(data)
-            this.wikiTitle = data.data
-          })
+    getWikiTitle:  function(isPageStart) {
+
+      if (!this.gettingWikiTile) {
+        this.gettingWikiTile = true
+        setTimeout(() => {
+          const requestOptions = {
+            method: 'GET',
+          };
+          fetch(`${this.$base_url}/wiki_game?title=${isPageStart ? this.game.page_start : this.game.page_end}`, requestOptions)
+              .then(response => response.json())
+              .then(data => {
+                console.log(data)
+                this.wikiTitle = data.data
+                this.gettingWikiTile = false
+              })
+        }, 1000)
+      }
     }
   }
 }
