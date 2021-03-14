@@ -60,7 +60,9 @@ export default {
       const data = JSON.parse(e.data)
       if(self.game) {
         if(data.event === "user enter") {
-          self.game.users.push(data.data)
+            if(!self.users.find(user => user.uuid === data.data.uuid)) {
+                self.game.users.push(data.data)
+            }
         }
         else if(data.event === "game start") {
           self.$router.push({name: 'Game', query: { 'i': data.data.id }})

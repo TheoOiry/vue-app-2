@@ -1,7 +1,7 @@
 <template>
   <div class="user-info">
       <div class="info">{{user.username}}
-          <span v-if="user.place"> #{{ user.place }}</span>
+          <span v-if="user.place">  #{{ user.place }}</span>
       </div>
   </div>
 </template>

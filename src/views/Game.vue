@@ -1,27 +1,39 @@
 <template>
     <div class="game" v-if="game">
-        <div class="wikiTitles">
-            <span class="wikiTitles_title">Titres Wikipedia</span>
-            <div class="wikiTitles_container">
-                <div class="wikiTitles_unit" v-for="wikiTitles in wikiTitles">
-                    <span>{{ wikiTitles.title }}</span>
+        <div v-if="!gameIsEnd" class="main_game">
+            <div class="wikiTitles">
+                <span class="wikiTitles_title">Titres Wikipedia</span>
+                <div class="wikiTitles_container">
+                    <button @click="reloadIframeUrl(wikiTitle.link)" class="wikiTitles_unit" v-for="wikiTitle in wikiTitles">
+                        <span>{{ wikiTitle.title }}</span>
+                    </button>
+                </div>
+            </div>
+            <div class="wiki__page">
+                <iframe class="iframe" id="ifr" :src="iFrameLink"></iframe>
+                <button class="resolve_button"
+                        v-if="game.page_end === this.wikiTitles[this.wikiTitles.length - 1].title && resolving !== null"
+                        @click="resolve()"
+                        :disabled="resolving === true"
+                >Resolve
+                </button>
+            </div>
+            <div class="players">
+                <span class="players_title">Joueurs</span>
+                <div class="players_container">
+                    <UserInfo class="players_unit" v-for="user in getUsersWithPlace" :key="user.uuid" :user="user"/>
                 </div>
             </div>
         </div>
-        <div class="wiki__page">
-            <iframe class="iframe" id="ifr" :src="game.url_start"></iframe>
-            <button class="resolve_button"
-                v-if="game.page_end === this.wikiTitles[this.wikiTitles.length - 1].title && resolving !== null"
-                @click="resolve()"
-                :disabled="resolving"
-            >Resolve
-            </button>
-        </div>
-        <div class="players">
-            <span class="players_title">Joueurs</span>
-            <div class="players_container">
-                <UserInfo class="players_unit" v-for="user in getUsersWithPlace" :key="user.uuid" :user="user"/>
-            </div>
+        <div v-else>
+            {{ getUsersWithPlace[0].username }} have win!
+            <ul>
+                <li v-for="user in getUsersWithPlace" :key="user">
+                    <div v-if="user.place">
+                        #{{ user.place }} - {{ user.username }}, time: {{ Math.floor(user.resolve_time / 60) }}:{{ Math.floor(user.resolve_time % 60) }}
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 </template>
@@ -43,6 +55,8 @@ export default {
             game: undefined,
             wikiTitles: [],
             resolving: false,
+            iFrameLink: "",
+            gameIsEnd: false
         }
     },
     created: function () {
@@ -59,7 +73,8 @@ export default {
 
                 self.game = res.game
                 self.wikiTitles.push({title: self.game.page_start, link: self.game.url_start})
-                self.iframeStartLink = self.game.url_start
+                self.iFrameLink = self.game.url_start
+                alert("Objectif:" + self.game.page_end)
                 console.log(self.game.url_start)
             })
             .catch(err => console.log(err))
@@ -78,6 +93,9 @@ export default {
                 self.game.users = self.game.users.map(function (user) {
                     return user_resolved.uuid === user.uuid ? user_resolved : user
                 })
+                if(!self.game.users.find(el => !el.resolve_time)) {
+                    self.gameIsEnd = true
+                }
             }
         }
     },
@@ -101,6 +119,10 @@ export default {
         }
     },
     methods: {
+        reloadIframeUrl: function (url) {
+            this.iFrameLink = url
+            document.querySelector("iframe").src = document.querySelector("iframe").src
+        },
         updateWikiTitles: function (event) {
             if (event.data.last_page.title === this.wikiTitles[this.wikiTitles.length - 1].title) {
                 this.wikiTitles.push(event.data.new_page)
@@ -110,7 +132,6 @@ export default {
                 }
                 this.wikiTitles.push(event.data.new_page)
             } else {
-                alert("C'est pas ouf de tricher")
                 this.wikiTitles.push(event.data.new_page)
             }
         },
@@ -139,7 +160,7 @@ export default {
 
 @import '../script'; // Using this should get you the variables
 
-.game {
+.main_game {
     display: flex;
     align-items: center;
     width: 99vw;
@@ -202,6 +223,8 @@ export default {
     border-radius: 30px;
     background-color: $white;
     color: black;
+    border: 0;
+    font-weight: bold;
 }
 
 .iframe {
@@ -225,7 +248,7 @@ export default {
     background-color: #42b983;
     color: $white;
 
-    &:not(:disabled) + :hover {
+    &:hover {
         transform: scale(1.15);
     }
 
