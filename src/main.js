@@ -6,7 +6,7 @@ import store from './store'
 
 Vue.config.productionTip = false
 
-Vue.prototype.$base_url = "http://127.0.0.1:8000"
+Vue.prototype.$base_url = "http://wiki-wars.fr:8000"
 
 new Vue({
   router,

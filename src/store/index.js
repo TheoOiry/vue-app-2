@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     token: undefined,
     uuid: undefined,
-    connection: new WebSocket('ws://localhost:8000/ws/')
+    connection: new WebSocket('ws://wiki-wars.fr:8000/ws/')
   },
   getters: {
     auth_full_header: state => ({"Authorization": state.token}),

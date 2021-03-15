@@ -22,6 +22,9 @@
           <button @click="copyLink()" >INVITE</button>
           <button @click="startGame()" >START</button>
         </div>
+          <div>
+              http://134.209.206.60/wars/#/lobby?i={{ game.id }}
+          </div>
       </div>
     </div>
   </div>
@@ -60,7 +63,7 @@ export default {
       const data = JSON.parse(e.data)
       if(self.game) {
         if(data.event === "user enter") {
-            if(!self.users.find(user => user.uuid === data.data.uuid)) {
+            if(!self.game.users.find(user => user.uuid === data.data.uuid)) {
                 self.game.users.push(data.data)
             }
         }
@@ -109,7 +112,7 @@ export default {
           .catch(err => console.log(err))
     },
     copyLink: async function (){
-      await navigator.clipboard.writeText(`http://localhost:8080/#/lobby?i=${this.game.id}`)
+      await navigator.clipboard.writeText(`https://134.209.206.60/wars/#/lobby?i=${this.game.id}`)
     },
     startGame: function (){
       const formData = new FormData();

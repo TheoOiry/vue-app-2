@@ -33,6 +33,7 @@
                         #{{ user.place }} - {{ user.username }}, time: {{ Math.floor(user.resolve_time / 60) }}:{{ Math.floor(user.resolve_time % 60) }}
                     </div>
                 </li>
+                <button @click="$router.push({name: 'Lobby', query: { 'i': game_id }})">Return to lobby</button>
             </ul>
         </div>
     </div>
@@ -80,7 +81,7 @@ export default {
             .catch(err => console.log(err))
 
         window.addEventListener('message', event => {
-            if (event.origin.startsWith(`http://localhost:8000`)) {
+            if (event.origin.startsWith(`http://134.209.206.60:8000`)) {
                 this.updateWikiTitles(event)
                 console.log(`NEW = ${event.data.new_page.title}`)
                 console.log(`LAST = ${event.data.last_page.title}`)
